@@ -29,10 +29,11 @@
     
     getToken(Msg, {vapidKey: MsgPublicKey}).then((CurrentToken)=>{
       if(CurrentToken){
-        set(ref(Database, `NotifyTargetToken/${CurrentToken}`),{
-          timestamp: new Date()
-        });
-        close();
+        set(ref(Database, "NotifyTargetsToken/"+CurrentToken),{
+          time: String(new Date().toLocaleString())
+        }).then(()=>{
+          close()
+        })
       }else{
         confirm('No registration token available. Require Notification permission to generate one.');
       }
