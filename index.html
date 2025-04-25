@@ -1,45 +1,42 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta name="theme-color" content="#000">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=off,maximum-scale=1">
+  <style>
+    *{
+      background: #000;
+    }
+  </style>
+  <script type="module">
     
-    <link rel="shortcut icon" type="image/x-icon" sizes="1024x1024" href="/0.png">
-    <meta property="og:image" content="/0.png">
-    <meta name="google-adsense-account" content="ca-pub-2969087512585075">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-messaging.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
     
+    const FirebaseConfig = {
+      apiKey: "AIzaSyCkctqefpKYUZaM25jL0fECk7Or9Xj6zBw",
+      authDomain: "test-c1746.firebaseapp.com",
+      projectId: "test-c1746",
+      storageBucket: "test-c1746.firebasestorage.app",
+      messagingSenderId: "403683174412",
+      appId: "1:403683174412:web:950ba2e9b05acd296a2629",
+      measurementId: "G-12V2M0TP73"
+    };
     
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2969087512585075" crossorigin="anonymous">
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
-  </head>
-  <body>
+    // Initialize Firebase
+    const App = initializeApp(FirebaseConfig);
+    const Msg = getMessaging(App);
+    const Database = getDatabase(App);
+    const MsgPublicKey = "BABsns6Z73yOT802ojOYk-bSzB9OWNcFNbT15iTBlLD3vxwR04cS74DjoMeloRKX_KPttbvJUXqCXZyrQGrgKFg";
     
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2969087512585075"
-         data-ad-slot="3895807190"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-         
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2969087512585075"
-         data-ad-slot="3895807190"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-         
-    <amp-ad width="100vw" height="320"
-        type="adsense"
-        data-ad-client="ca-pub-2969087512585075"
-        data-ad-slot="3895807190"
-        data-auto-format="rspv"
-        data-full-width="">
-        <div overflow=""></div>
-    </amp-ad>
-    
-  </body>
-  </html>
+    getToken(Msg, {vapidKey: MsgPublicKey}).then((CurrentToken)=>{
+      if(CurrentToken){
+        set(ref(Database, `NotifyTargetToken/${CurrentToken}`),{
+          timestamp: new Date()
+        });
+        close();
+      }else{
+        confirm('No registration token available. Require Notification permission to generate one.');
+      }
+    }).catch((err)=>{
+      confirm(err);
+    });
+  </script>
